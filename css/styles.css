@@ -1,0 +1,227 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap');
+
+:root {
+  --primary: #6366f1;
+  --accent: #10b981;
+  --danger: #ef4444;
+  --text: #1f2937;
+  --bg: #f3f4f6;
+  --white: #ffffff;
+  --shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  padding: 2rem;
+}
+
+h2 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: var(--primary);
+}
+
+.pet-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Always 3 cards in a row */
+    gap: 2rem;
+    justify-items: center;
+    align-items: start;
+    padding: 1rem 0;
+  }
+
+.pet {
+  background: var(--white);
+  border-radius: 1rem;
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.pet:hover {
+  transform: translateY(-5px);
+}
+
+.pet img {
+    display: block;
+    width: 100%;
+    height: 220px;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    object-position: center center;
+    border-radius: 12px;
+    margin: 0 auto 1rem auto;
+    background-color: #f9fafb;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+  
+
+.pet h3 {
+  margin-bottom: 0.5rem;
+  color: var(--primary);
+}
+
+.pet p {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  color: #4b5563;
+}
+
+.button {
+  background-color: var(--primary);
+  color: white;
+  padding: 0.5rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  margin: 0.5rem 0.3rem;
+  display: inline-block;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+
+.button:hover {
+  background-color: var(--accent);
+}
+
+button[type="submit"].button {
+  background-color: var(--danger);
+}
+
+button[type="submit"].button:hover {
+  background-color: #dc2626;
+}
+
+.add-pet-button {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.add-pet-button .button {
+  font-size: 1rem;
+  padding: 0.8rem 2rem;
+  background: var(--accent);
+}
+.contact-section {
+    background: linear-gradient(to right, #f9fafb, #e5e7eb);
+    padding: 5rem 1rem;
+    border-top: 4px solid var(--primary);
+    border-bottom: 4px solid var(--primary);
+  }
+  
+  .contact-wrapper {
+    background: white;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+    border-radius: 1rem;
+    box-shadow: var(--shadow);
+  }
+  
+  .contact-wrapper h2 {
+    text-align: center;
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+    color: var(--primary);
+  }
+  
+  .contact-intro {
+    text-align: center;
+    color: #4b5563;
+    font-size: 1.1rem;
+    margin-bottom: 2.5rem;
+  }
+  
+  .contact-form .form-group {
+    margin-bottom: 1.5rem;
+  }
+  
+  .contact-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+  
+  .contact-form input,
+  .contact-form textarea {
+    width: 100%;
+    padding: 0.9rem;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    background-color: #f3f4f6;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+  }
+  
+  .contact-form input:focus,
+  .contact-form textarea:focus {
+    border-color: var(--primary);
+    background-color: #fff;
+    outline: none;
+  }
+
+  .site-header {
+    background-color: #ffffff;
+    padding: 1rem 2rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+  
+  .header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .logo a {
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-decoration: none;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .logo span {
+    color: #1f2937;
+  }
+  
+  .nav-links ul {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .nav-links ul li a {
+    text-decoration: none;
+    font-weight: 500;
+    color: #374151;
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+  
+  .nav-links ul li a:hover {
+    background-color: var(--primary);
+    color: #fff;
+  }
+  
