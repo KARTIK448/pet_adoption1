@@ -1,18 +1,20 @@
 <?php
+session_start();
 include 'db/config.php';
+include 'includes/functions.php';
 
 if (!isset($_GET['id'])) {
-    header("Location: pets.php");
-    exit;
+    redirect('index.php');
 }
 
-$id = $_GET['id'];
+$pet_id = $_GET['id'];
+
 $stmt = $pdo->prepare("SELECT * FROM pets WHERE id = ?");
-$stmt->execute([$id]);
+$stmt->execute([$pet_id]);
 $pet = $stmt->fetch();
 
 if (!$pet) {
-    header("Location: pets.php");
+    echo "Pet not found!";
     exit;
 }
 ?>
@@ -21,15 +23,25 @@ if (!$pet) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title><?php echo htmlspecialchars($pet['name']); ?> Details</title>
+    <title><?php echo htmlspecialchars($pet['name']); ?> - Pet Details</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <h1><?php echo htmlspecialchars($pet['name']); ?></h1>
-    <img src="images/<?php echo htmlspecialchars($pet['image']); ?>" alt="<?php echo htmlspecialchars($pet['name']); ?>">
-    <p>Breed: <?php echo htmlspecialchars($pet['breed']); ?></p>
-    <p>Age: <?php echo htmlspecialchars($pet['age']); ?> years</p>
-    <p><?php echo htmlspecialchars($pet['description']); ?></p>
-    <a href="pets.php">Back to Pets</a>
+<?php include 'includes/header.php'; ?>
+
+<section class="pet-details">
+    <div class="details-container">
+        <h2><?php echo htmlspecialchars($pet['name']); ?> 🐾</h2>
+        <img src="images/<?php echo htmlspecialchars($pet['image']); ?>" alt="<?php echo htmlspecialchars($pet['name']); ?>" class="details-img">
+        <div class="details-info">
+            <p><strong>Breed:</strong> <?php echo htmlspecialchars($pet['breed']); ?></p>
+            <p><strong>Age:</strong> <?php echo htmlspecialchars($pet['age']); ?> years</p>
+            <p><strong>Description:</strong> <?php echo htmlspecialchars($pet['description']); ?></p>
+        </div>
+        <a href="index.php" class="button">⬅ Back to List</a>
+    </div>
+</section>
+
+<?php include 'includes/footer.php'; ?>
 </body>
 </html>

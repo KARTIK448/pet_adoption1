@@ -6,12 +6,12 @@ include 'includes/functions.php';
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = sanitizeInput($_POST['username']);
     $password = sanitizeInput($_POST['password']);
-    $confirm_password = sanitizeInput($_POST['confirm_password']);
+    
 
     // Check if passwords match
-    if ($password !== $confirm_password) {
-        $error = "Passwords do not match.";
-    } else {
+    
+    
+
         // Check if the username already exists
         $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ?");
         $stmt->execute([$username]);
@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $error = "Error registering user.";
             }
         }
-    }
+    
 }
 ?>
 
@@ -40,24 +40,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Register</h1>
+<?php include 'includes/header.php'; ?>
+
+<section class="form-section">
+    <div class="form-container">
+        <h2>Register ✍️</h2>
+
         <?php if (isset($error)): ?>
-            <p style="color: red;"><?php echo $error; ?></p>
+            <p class="error-message"><?php echo htmlspecialchars($error); ?></p>
         <?php endif; ?>
-        <form action="register.php" method="post">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
 
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
+        <form method="post">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" name="username" id="username" required>
+            </div>
 
-            <label for="confirm_password">Confirm Password:</label>
-            <input type="password" id="confirm_password" name="confirm_password" required>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" required>
+            </div>
 
-            <button type="submit">Register</button>
+            <button type="submit" class="button">Register</button>
         </form>
-        <p>Already have an account? <a href="login.php">Login here</a>.</p>
+
+        <p style="text-align:center; margin-top:1rem;">Already have an account? <a href="login.php">Login</a></p>
     </div>
+</section>
+
+<?php include 'includes/footer.php'; ?>
 </body>
 </html>

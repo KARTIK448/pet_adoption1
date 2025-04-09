@@ -23,6 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 ?>
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,21 +32,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Login</h1>
+<?php include 'includes/header.php'; ?>
+
+<section class="form-section">
+    <div class="form-container">
+        <h2>Login 🔐</h2>
+
         <?php if (isset($error)): ?>
-            <p style="color: red;"><?php echo $error; ?></p>
+            <p class="error-message"><?php echo $error; ?></p>
         <?php endif; ?>
-        <form action="login.php" method="post">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
 
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
+        <form method="post">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" name="username" id="username" required>
+            </div>
 
-            <button type="submit">Login</button>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" required>
+            </div>
+
+            <button type="submit" class="button">Login</button>
         </form>
-        <p>Don't have an account? <a href="register.php">Register here</a>.</p>
+
+        <p style="text-align:center; margin-top:1rem;">Don't have an account? <a href="register.php">Register</a></p>
     </div>
+</section>
+
+<?php include 'includes/footer.php'; ?>
 </body>
 </html>

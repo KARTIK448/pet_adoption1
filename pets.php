@@ -1,32 +1,42 @@
 <?php
 session_start();
 include 'db/config.php';
+include 'includes/functions.php';
 
-$stmt = $pdo->query("SELECT * FROM pets WHERE available = 1");
-$pets = $stmt->fetchAll();
+$pets = getAllPets($pdo);
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Available Pets</title>
+    <title>All Pets</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <h1>Available Pets for Adoption</h1>
-    <a href="add_pet.php">Add New Pet (Admin)</a>
-    <div class="pet-list">
-        <?php foreach ($pets as $pet): ?>
-            <div class="pet">
-                <h2><?php echo htmlspecialchars($pet['name']); ?></h2>
-                <img src="images/<?php echo htmlspecialchars($pet['image']); ?>" alt="<?php echo htmlspecialchars($pet['name']); ?>">
-                <p>Breed: <?php echo htmlspecialchars($pet['breed']); ?></p>
-                <p>Age: <?php echo htmlspecialchars($pet['age']); ?> years</p>
-                <p><?php echo htmlspecialchars($pet['description']); ?></p>
-                <a href="pet_details.php?id=<?php echo $pet['id']; ?>">View Details</a>
-            </div>
-        <?php endforeach; ?>
+<?php include 'includes/header.php'; ?>
+
+<section class="pets-gallery">
+    <div class="container">
+        <h2>Available Pets 🐕‍🦺</h2>
+        <div class="pet-list">
+            <?php if (count($pets) > 0): ?>
+                <?php foreach ($pets as $pet): ?>
+                    <div class="pet-card">
+                        <h3><?php echo htmlspecialchars($pet['name']); ?></h3>
+                        <img src="images/<?php echo htmlspecialchars($pet['image']); ?>" alt="<?php echo htmlspecialchars($pet['name']); ?>">
+                        <p><strong>Breed:</strong> <?php echo htmlspecialchars($pet['breed']); ?></p>
+                        <p><strong>Age:</strong> <?php echo htmlspecialchars($pet['age']); ?> years</p>
+                        <a href="pet_details.php?id=<?php echo $pet['id']; ?>" class="button">View Details</a>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p>No pets available right now!</p>
+            <?php endif; ?>
+        </div>
     </div>
+</section>
+
+<?php include 'includes/footer.php'; ?>
 </body>
 </html>

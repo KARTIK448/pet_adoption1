@@ -1,14 +1,12 @@
 <?php
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $name = $_POST['name'];
-    $email = $_POST['email'];
-    $message = $_POST['message'];
-
-    // Placeholder for sending email
-    // mail($to, $subject, $message, $headers);
-
-    $feedback = "Thank you for your message, $name!";
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
 }
+$username = $_SESSION['username'] ?? null;
+$message = $_SESSION['message'] ?? null;
+
+// Dynamic root path to fix CSS path issue everywhere
+$root = rtrim(dirname($_SERVER['PHP_SELF'], 1), '/\\');
 ?>
 
 <!DOCTYPE html>
@@ -38,6 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   </div>
 </header>
 <!-- Header End -->
+
 
 
 </body>

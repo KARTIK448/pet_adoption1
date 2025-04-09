@@ -1,45 +1,51 @@
 <?php
 session_start();
 include 'db/config.php';
+include 'includes/functions.php';
 
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit;
+if (!isLoggedIn()) {
+    redirect('login.php');
 }
 
 if (!isset($_GET['id'])) {
-    header("Location: pets.php");
-    exit;
+    redirect('index.php');
 }
 
-$id = $_GET['id'];
+$pet_id = $_GET['id'];
+
+// Fetch pet info
 $stmt = $pdo->prepare("SELECT * FROM pets WHERE id = ?");
-$stmt->execute([$id]);
+$stmt->execute([$pet_id]);
 $pet = $stmt->fetch();
 
 if (!$pet) {
-    header("Location: pets.php");
+    echo "Pet not found!";
     exit;
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $name = $_POST['name'];
-    $breed = $_POST['breed'];
-    $age = $_POST['age'];
-    $description = $_POST['description'];
-    
-    // Check if a new image is uploaded
-    if ($_FILES['image']['name']) {
-        $image = $_FILES['image']['name'];
-        move_uploaded_file($_FILES['image']['tmp_name'], "images/" . $image);
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $name = $_POST["name"];
+    $breed = $_POST["breed"];
+    $age = $_POST["age"];
+    $description = $_POST["description"];
+
+    if (!empty($_FILES["image"]["name"])) {
+        $image = $_FILES["image"]["name"];
+        $target = "images/" . basename($image);
+        move_uploaded_file($_FILES["image"]["tmp_name"], $target);
     } else {
-        $image = $pet['image']; // Keep the old image if no new one is uploaded
+        $image = $pet['image'];
     }
 
-    $stmt = $pdo->prepare("UPDATE pets SET name = ?, breed = ?, age = ?, description = ?, image = ? WHERE id = ?");
-    $stmt->execute([$name, $breed, $age, $description, $image, $id]);
+    $stmt = $pdo->prepare("UPDATE pets SET name=?, breed=?, age=?, description=?, image=? WHERE id=?");
+    $stmt->execute([$name, $breed, $age, $description, $image, $pet_id]);
 
-    header("Location: pets.php");
+    $success = "Pet updated successfully!";
+    $pet['name'] = $name;
+    $pet['breed'] = $breed;
+    $pet['age'] = $age;
+    $pet['description'] = $description;
+    $pet['image'] = $image;
 }
 ?>
 
@@ -51,14 +57,48 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <h1>Edit Pet</h1>
-    <form method="POST" enctype="multipart/form-data">
-        <input type="text" name="name" value="<?php echo htmlspecialchars($pet['name']); ?>" required>
-        <input type="text" name="breed" value="<?php echo htmlspecialchars($pet['breed']); ?>" required>
-        <input type="number" name="age" value="<?php echo htmlspecialchars($pet['age']); ?>" required>
-        <textarea name="description" required><?php echo htmlspecialchars($pet['description']); ?></textarea>
-        <input type="file" name="image">
-        <button type="submit">Update Pet</button>
-    </form>
+<?php include 'includes/header.php'; ?>
+
+<section class="form-section">
+    <div class="form-container">
+        <h2>Edit Pet 🛠️</h2>
+
+        <?php if (isset($success)): ?>
+            <p class="success-message"><?php echo $success; ?></p>
+        <?php endif; ?>
+
+        <form method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="name">Pet Name</label>
+                <input type="text" name="name" id="name" value="<?php echo htmlspecialchars($pet['name']); ?>" required>
+            </div>
+
+            <div class="form-group">
+                <label for="breed">Breed</label>
+                <input type="text" name="breed" id="breed" value="<?php echo htmlspecialchars($pet['breed']); ?>" required>
+            </div>
+
+            <div class="form-group">
+                <label for="age">Age (in years)</label>
+                <input type="number" name="age" id="age" value="<?php echo htmlspecialchars($pet['age']); ?>" min="0" required>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea name="description" id="description" rows="4" required><?php echo htmlspecialchars($pet['description']); ?></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="image">Update Image</label>
+                <input type="file" name="image" id="image" accept="image/*">
+                <p>Current: <img src="images/<?php echo htmlspecialchars($pet['image']); ?>" style="width: 100px; height: auto; margin-top: 0.5rem;"></p>
+            </div>
+
+            <button type="submit" class="button">Save Changes</button>
+        </form>
+    </div>
+</section>
+
+<?php include 'includes/footer.php'; ?>
 </body>
 </html>
